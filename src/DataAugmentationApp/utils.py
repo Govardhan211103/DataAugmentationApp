@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 from DataAugmentationApp.logger import logger
 
@@ -27,3 +28,13 @@ def create_directory(path_to_directories: list, verbose = True):
         os.makedirs(Path(path), exist_ok=True)
         if verbose:
             logger.info(f"directory: {path} created successfully")
+
+
+def clear_the_directories(input_images_path, output_images_path):
+    """
+    This function deletes the input_images_path and output_images_path directories.
+    """
+    if os.path.exists(input_images_path):
+        shutil.rmtree(input_images_path)
+    if os.path.exists(output_images_path):
+        shutil.rmtree(output_images_path)

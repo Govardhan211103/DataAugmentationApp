@@ -7,7 +7,7 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 
 from DataAugmentationApp.ImageDataGeneration import ImageDataGeneratorComponent
-from DataAugmentationApp.utils import create_directory, zipdir
+from DataAugmentationApp.utils import create_directory, zipdir, clear_the_directories
 from DataAugmentationApp.logger import logger
 
 def main(input_images_path, output_images_path, image_data_generator_object):
@@ -125,6 +125,8 @@ if __name__ == '__main__':
     # define the paths for the input and output directories
     input_images_path = Path(os.path.join(os.getcwd(), 'data/input_images'))
     output_images_path = Path(os.path.join(os.getcwd(), 'data/output_images'))
+
+    clear_the_directories(input_images_path, output_images_path)
 
     # create the input and output directories for the images 
     create_directory([input_images_path, output_images_path])
