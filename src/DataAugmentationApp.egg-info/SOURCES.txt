@@ -3,6 +3,7 @@ setup.py
 src/DataAugmentationApp/ImageDataGeneration.py
 src/DataAugmentationApp/__init__.py
 src/DataAugmentationApp/logger.py
+src/DataAugmentationApp/utils.py
 src/DataAugmentationApp.egg-info/PKG-INFO
 src/DataAugmentationApp.egg-info/SOURCES.txt
 src/DataAugmentationApp.egg-info/dependency_links.txt
