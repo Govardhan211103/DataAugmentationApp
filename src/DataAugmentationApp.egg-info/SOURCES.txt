@@ -1,0 +1,9 @@
+README.md
+setup.py
+src/DataAugmentationApp/ImageDataGeneration.py
+src/DataAugmentationApp/__init__.py
+src/DataAugmentationApp/logger.py
+src/DataAugmentationApp.egg-info/PKG-INFO
+src/DataAugmentationApp.egg-info/SOURCES.txt
+src/DataAugmentationApp.egg-info/dependency_links.txt
+src/DataAugmentationApp.egg-info/top_level.txt
