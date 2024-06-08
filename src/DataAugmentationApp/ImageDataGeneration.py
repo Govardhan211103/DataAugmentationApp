@@ -104,7 +104,7 @@ class ImageDataGeneratorComponent():
                     # Save the image to the specified path
                     augmented_img.save(output_file_path)
 
-                    # st.write("Augmented ", image_file_name)
+                    st.write("Augmented ", image_file_name)
                     logger.info(f"Augmented {image_file_name}")
 
                 logger.info(f"Image {image_path} has been augmented")
