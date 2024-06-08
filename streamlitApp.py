@@ -1,6 +1,8 @@
 import os
+import re
 import json
 import zipfile
+import datetime
 import numpy as np
 from pathlib import Path
 import streamlit as st
@@ -221,6 +223,9 @@ def validate_email(email):
         return True
     return False
 
+def signup_from_submission():
+    pass
+    # st.success("Your account has been created successfully. Please login to continue.")
 
 def sign_up():
     with st.form(key='signup', clear_on_submit=True):
@@ -230,7 +235,7 @@ def sign_up():
         username = st.text_input(':blue[Username]', placeholder='Enter Your Username')
         password1 = st.text_input(':blue[Password]', placeholder='Enter Your Password', type='password')
         password2 = st.text_input(':blue[Confirm Password]', placeholder='Confirm Your Password', type='password')
-
+        balloons = None
         if email:
             if validate_email(email):
                 if email not in get_user_emails():
@@ -242,7 +247,7 @@ def sign_up():
                                     hashed_password = Hasher([password2]).generate()
                                     reference = fetch_users()
                                     insert_user(reference.child('usernames'), email, username, fullname, hashed_password[0])
-                                    st.success('Account created successfully!!')
+                                    st.write(':green[Account created successfully!!]')
                                     st.balloons()
                                 else:
                                     st.warning('Passwords Do Not Match')
@@ -257,10 +262,7 @@ def sign_up():
             else:
                 st.warning('Invalid Email')
 
-        btn1, bt2, btn3, btn4, btn5 = st.columns(5)
-
-        with btn3:
-            st.form_submit_button('Sign Up')
+        st.form_submit_button(":red[\"SIGNUP\"]", on_click = signup_from_submission)
 
 
 def main():
