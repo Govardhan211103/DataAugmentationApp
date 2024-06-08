@@ -117,6 +117,9 @@ def download_images(input_images_path, output_images_path):
     """
     This function creates a download button to download all the images in the output_images directory.
     """
+    if len(os.listdir(output_images_path)) != 0:
+        st.subheader("Download the images.")
+
     def download_button(label, file_path, button_text="Download"):
         """
         This function creates a download button to download the specified file.
