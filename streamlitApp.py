@@ -1,4 +1,5 @@
 import os
+import json
 import zipfile
 import numpy as np
 from pathlib import Path
@@ -362,13 +363,26 @@ def main():
 if __name__ == '__main__':
     try:
         if not firebase_admin._apps:
-            cred = credentials.Certificate("firebase_key.json")
+            firebase_config = st.secrets["firebase"]
+            private_key = firebase_config["private_key"].replace("\\n", "\n")
+            cred = credentials.Certificate({
+                "type": firebase_config["type"],
+                "project_id": firebase_config["project_id"],
+                "private_key_id": firebase_config["private_key_id"],
+                "private_key": private_key,
+                "client_email": firebase_config["client_email"],
+                "client_id": firebase_config["client_id"],
+                "auth_uri": firebase_config["auth_uri"],
+                "token_uri": firebase_config["token_uri"],
+                "auth_provider_x509_cert_url": firebase_config["auth_provider_x509_cert_url"],
+                "client_x509_cert_url": firebase_config["client_x509_cert_url"]
+            })
             firebase_admin.initialize_app(cred, {
-                'databaseURL': 'https://dataaug-userbase-963e5-default-rtdb.firebaseio.com/'
+                'databaseURL': st.secrets["databaseURL"]["url"]
             })
         # app = firebase_admin.get_app()
     except ValueError as e:
         print("Initialization error : ", e)
-
+    
     main()
 
