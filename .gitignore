@@ -1,3 +1,5 @@
 logs
 data
 images.zip
+firebase_key.json
+.streamlit/secrets.toml

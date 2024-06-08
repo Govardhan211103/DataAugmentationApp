@@ -2,5 +2,7 @@ numpy
 tensorflow
 streamlit
 streamlit
+streamlit-authenticator
+firebase-admin
 scipy
 -e . 

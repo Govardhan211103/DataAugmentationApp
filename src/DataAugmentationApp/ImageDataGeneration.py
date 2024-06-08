@@ -39,6 +39,7 @@ class ImageDataGeneratorComponent():
         flipper_horizontal = ImageDataGenerator(horizontal_flip = parameters_dict['flipper_horizontal']) if parameters_dict['flipper_horizontal'] is not None else None
         flipper_vertical = ImageDataGenerator(vertical_flip = parameters_dict['flipper_vertical']) if parameters_dict['flipper_vertical'] is not None else None
         brightness = ImageDataGenerator(brightness_range = parameters_dict['brightness']) if parameters_dict['brightness'] is not None else None
+        channel_shift = ImageDataGenerator(channel_shift_range = parameters_dict['channel_shift']) if parameters_dict['channel_shift'] is not None else None
 
         logger.info("created ImageDataGenerator objects")
 
@@ -49,7 +50,8 @@ class ImageDataGeneratorComponent():
             'zoomer' : zoomer ,
             'flipper_horizontal' : flipper_horizontal ,
             'flipper_vertical' : flipper_vertical ,
-            'brightness' : brightness 
+            'brightness' : brightness ,
+            'channel_shift' : channel_shift
         }
         final_augmentators_dict = {key: value for key, value in augmentators_dict.items() if value is not None}
 
@@ -102,10 +104,12 @@ class ImageDataGeneratorComponent():
                     # Save the image to the specified path
                     augmented_img.save(output_file_path)
 
-                    st.write("Augmented ", image_file_name)
+                    # st.write("Augmented ", image_file_name)
                     logger.info(f"Augmented {image_file_name}")
 
                 logger.info(f"Image {image_path} has been augmented")
+        else:
+            logger.info(f"No images found in {input_images_path}")
 
 
 if __name__ == '__main__':
