@@ -51,24 +51,28 @@ def dashboard(input_images_path, output_images_path, image_data_generator_object
         # list of numbers for selection box parameters
         range_of_floats = list(np.round((np.arange(0.1, 1.0, 0.1)), decimals = 1))
 
+        default_brightness_range = (0.5, 1.5)
+
         # form for the input parameters
         with st.form(key='columns_in_form'):
             # two columns for easy access
             column1, column2 = st.columns(2)
             with column1:
-                rotation_range = st.selectbox("Rotation Range", [None] + list(range(10, 180, 10)))
-                shear_range = st.selectbox("Shear Range", [None] + list(range(10, 180, 10)))
-                zoom_range = st.selectbox("Zoom Range", [None] + range_of_floats)
-                width_shift_range = st.selectbox("Crop Width Shift Range", [None] + range_of_floats)
-                channel_shift_range = st.selectbox("Channel Shift Range", [None] + list(range(10, 100, 10)))
-                
+                rotation_range = st.selectbox("**Rotation Range**", [None] + list(range(10, 180, 10)))
+                shear_range = st.selectbox("**Shear Range**", [None] + list(range(10, 180, 10)))
+                zoom_range = st.selectbox("**Zoom Range**", [None] + range_of_floats)
+                width_shift_range = st.selectbox("**Crop Width Shift Range**", [None] + range_of_floats)
+                 
             with column2:
-                horizontal_flip = st.selectbox("Horizontal Flip", [None, True, False])
-                vertical_flip = st.selectbox("Vertical Flip", [None, True, False])
-                brightness_range = st.selectbox("Brightness Range", [None] + range_of_floats)
-                height_shift_range = st.selectbox("Crop Height Shift Range", [None] + range_of_floats)
+                horizontal_flip = st.selectbox("**Horizontal Flip**", [None, True, False])
+                vertical_flip = st.selectbox("**Vertical Flip**", [None, True, False])
+                channel_shift_range = st.selectbox("**Channel Shift Range**", [None] + list(range(10, 100, 10)))
+                height_shift_range = st.selectbox("**Crop Height Shift Range**", [None] + range_of_floats)
+            brightness_range = st.slider('**Brightness Range**', 0.0, 2.0, (0.5, 1.5), step=0.1)
+            no_of_images = st.number_input('**No of images for each technique**', min_value = 1, max_value = 10, value = 1)
+               
             
-            submitted = st.form_submit_button(":red[\"AUGMENTATE\"]", on_click= form_submission())
+            submitted = st.form_submit_button("**:red[AUGMENTATE]**", on_click= form_submission())
 
 
         # get the values of the form into parameters dictionary
@@ -79,8 +83,9 @@ def dashboard(input_images_path, output_images_path, image_data_generator_object
             'flipper_horizontal' : None if horizontal_flip is None or horizontal_flip is False else horizontal_flip, 
             'flipper_vertical' : None if vertical_flip is None or vertical_flip is False else vertical_flip,
             'cropper' : (width_shift_range, height_shift_range) if width_shift_range is not None and height_shift_range is not None else None,
-            'brightness' : (0, brightness_range) if brightness_range is not None else None,
-            'channel_shift' : channel_shift_range if channel_shift_range is not None else None
+            'brightness' : brightness_range if brightness_range != default_brightness_range else None,
+            'channel_shift' : channel_shift_range if channel_shift_range is not None else None,
+            'no_of_images' : no_of_images
         }
         logger.info("aquired the augmentation parameters.")
 
@@ -95,9 +100,9 @@ def dashboard(input_images_path, output_images_path, image_data_generator_object
             logger.info("Saved the uploaded images to the input_images_path directory.")
 
         # call the get_augmentator_objects function to get the augmentator objects
-        final_augmentators_dict = image_data_generator_object.get_augmentator_objects(parameters_dict)
+        final_augmentators_dict, number_of_images = image_data_generator_object.get_augmentator_objects(parameters_dict)
         # perform the augmentation on the images in the output_images_path directory using image_augmentation function
-        image_data_generator_object.image_augmentation(input_images_path, output_images_path, final_augmentators_dict)
+        image_data_generator_object.image_augmentation(input_images_path, output_images_path, final_augmentators_dict, number_of_images)
         
         # call the download_files function
         download_images(input_images_path, output_images_path)
@@ -149,11 +154,14 @@ def download_images(input_images_path, output_images_path):
         zipdir(directory_path, zipf)
 
     # Display the download button
-    download_button("Download Images", zip_file_path)
+    st.markdown('')
+    st.markdown("**Download the augmented images Here!!**")
+    download_button("**Download Images**", zip_file_path)
 
 
 def form_submission():
-    st.markdown("Click the AUGMENTATE button to start the augmentation process.")
+    st.markdown("---")
+    st.markdown("**Click the AUGMENTATE button to start the augmentation process.**")
 
 
 
@@ -247,7 +255,7 @@ def sign_up():
                                     hashed_password = Hasher([password2]).generate()
                                     reference = fetch_users()
                                     insert_user(reference.child('usernames'), email, username, fullname, hashed_password[0])
-                                    st.write(':green[Account created successfully!!]')
+                                    st.write(':green[Account created successfully!! PLEASE LOGIN TO CONTINUE]')
                                     st.balloons()
                                 else:
                                     st.warning('Passwords Do Not Match')

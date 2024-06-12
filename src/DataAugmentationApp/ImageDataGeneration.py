@@ -40,6 +40,7 @@ class ImageDataGeneratorComponent():
         flipper_vertical = ImageDataGenerator(vertical_flip = parameters_dict['flipper_vertical']) if parameters_dict['flipper_vertical'] is not None else None
         brightness = ImageDataGenerator(brightness_range = parameters_dict['brightness']) if parameters_dict['brightness'] is not None else None
         channel_shift = ImageDataGenerator(channel_shift_range = parameters_dict['channel_shift']) if parameters_dict['channel_shift'] is not None else None
+        no_of_images = parameters_dict['no_of_images']
 
         logger.info("created ImageDataGenerator objects")
 
@@ -56,10 +57,10 @@ class ImageDataGeneratorComponent():
         final_augmentators_dict = {key: value for key, value in augmentators_dict.items() if value is not None}
 
         logger.info("returning ImageDataGenerator objects")
-        return final_augmentators_dict
+        return (final_augmentators_dict, no_of_images)
 
     
-    def image_augmentation(self, input_images_path, output_images_path, final_augmentators_dict):
+    def image_augmentation(self, input_images_path, output_images_path, final_augmentators_dict, number_of_images):
         """
         This function loads each image from the input_images_path directory,
         applies the final_augmentators_dict on it and saves the augmented images
@@ -89,23 +90,24 @@ class ImageDataGeneratorComponent():
 
                 # save the augmented images to the output_directory file
                 for i, (augmentator_key, augmentator) in enumerate(final_augmentators_dict.items()):
-                    # get the augmentated image
-                    augmented_img = augmentator.flow(array, batch_size=1)[0]
-                    # printing the augmented image shape in terminal
-                    print(augmented_img.shape)
+                    for j in range(number_of_images):
+                        # get the augmentated image
+                        augmented_img = augmentator.flow(array, batch_size=1)[0]
+                        # printing the augmented image shape in terminal
+                        print(augmented_img.shape)
 
-                    # Convert the augmented image back to a PIL Image
-                    augmented_img = augmented_img.reshape(augmented_img.shape[1:])
-                    augmented_img = tf.keras.preprocessing.image.array_to_img(augmented_img)
+                        # Convert the augmented image back to a PIL Image
+                        augmented_img = augmented_img.reshape(augmented_img.shape[1:])
+                        augmented_img = tf.keras.preprocessing.image.array_to_img(augmented_img)
 
-                    # output file path
-                    image_file_name = f"{path.split('.')[0]}_{augmentator_key}.jpeg" 
-                    output_file_path = os.path.join(output_images_path, image_file_name)
-                    # Save the image to the specified path
-                    augmented_img.save(output_file_path)
+                        # output file path
+                        image_file_name = f"{path.split('.')[0]}_{augmentator_key}{j}.jpeg" 
+                        output_file_path = os.path.join(output_images_path, image_file_name)
+                        # Save the image to the specified path
+                        augmented_img.save(output_file_path)
 
-                    st.write(f":green[Augmented {image_file_name}]")
-                    logger.info(f"Augmented {image_file_name}")
+                        st.write(f":green[Augmented {image_file_name}]")
+                        logger.info(f"Augmented {image_file_name}")
 
                 logger.info(f"Image {image_path} has been augmented")
         else:
