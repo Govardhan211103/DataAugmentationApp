@@ -11,9 +11,6 @@ from streamlit_authenticator.utilities.hasher import Hasher
 import firebase_admin
 from firebase_admin import credentials, auth, db
 
-import tensorflow as tf
-from tensorflow.keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
-
 from DataAugmentationApp.ImageDataGeneration import ImageDataGeneratorComponent
 from DataAugmentationApp.utils import create_directory, zipdir, clear_the_directories
 from DataAugmentationApp.logger import logger

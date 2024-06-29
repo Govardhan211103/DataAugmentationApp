@@ -74,7 +74,7 @@ class ImageDataGeneratorComponent():
             None
         """
         images_paths = os.listdir(input_images_path)
-
+        # [img1.png, img2.png]
         if len(images_paths) != 0:
             for index, path in enumerate(images_paths):
                 image_path = os.path.join(input_images_path, path)
