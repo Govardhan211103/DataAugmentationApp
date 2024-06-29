@@ -27,7 +27,7 @@ def dashboard(input_images_path, output_images_path, image_data_generator_object
         st.markdown("""
             ### Perform Data Augmentation for Your Images
 
-            - Go to the :red[**WorkFlow**] tab.
+            - Go to the :red[**Workflow**] tab.
             - Upload the images :file_folder:.
             - Select the augmentation types below with appropriate parameters :gear:.
             - Click on the :red[**AUGMENTATE**] button.

@@ -1,6 +1,5 @@
 numpy
-tensorflow==2.8.0
-streamlit
+tensorflow
 streamlit
 streamlit-authenticator
 firebase-admin
